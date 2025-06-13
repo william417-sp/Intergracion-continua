@@ -8,7 +8,7 @@ jobs:
 
     steps:
      - name: Print variable
-       run: echo "${{ secrets.TOKEN_SECRECT }}"
+       run: echo "${{ secrets.TOKEN_SECRET }}"
 
    # strategy:
   #    matrix:
