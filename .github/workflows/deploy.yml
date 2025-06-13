@@ -10,7 +10,7 @@ jobs:
      - name: Print variable
        run: echo "${{ secrets.TOKEN_SECRECT }}"
 
-    strategy:
+   # strategy:
   #    matrix:
   #      os: [ubuntu-latest, windows-latest]
   #      node: [18, 20]
