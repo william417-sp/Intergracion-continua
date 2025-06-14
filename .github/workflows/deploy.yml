@@ -21,11 +21,11 @@ jobs:
       - name: Instalar dependencias
         run: npm install
 
-      #- name: Run test
-      #  run: npm run test
-#
-      #- name: Build page
-      #  run: npm run build
+      - name: Run test
+        run: npm run test
+
+      - name: Build page
+        run: npm run build
   
    # strategy:
   #    matrix:
