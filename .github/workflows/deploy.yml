@@ -39,7 +39,7 @@ jobs:
 
     steps:
      - name: Deploy
-       run: echo "Deploying to GitHub Pages"
+       uses: actions/deploy-pages@v4
   
    # strategy:
   #    matrix:
