@@ -6,15 +6,15 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
-    strategy:
-     matrix:
-       os: [ubuntu-latest, windows-latest]
-       node: [18, 20]
+#    strategy:
+#     matrix:
+#       os: [ubuntu-latest, windows-latest]
+#       node: [18, 20]
 
     steps:
-      - name: Print variable
-        run: echo "${{ secrets.TOKEN_SECRET }}"
-
+ #     - name: Print variable
+ #       run: echo "${{ secrets.TOKEN_SECRET }}"
+#
       - name: Checkout
         uses: actions/checkout@v4
 
@@ -33,43 +33,54 @@ jobs:
       - name: Build page
         run: npm run build
 
-      - name: Upload artifact
-        if: ${{ matrix.os == 'ubuntu-latest' && matrix.node == 18 }}
-        uses: actions/upload-pages-artifact@v3
+      - name: Deploy to Azure Static Web Apps
+        uses: Azure/static-web-apps-deploy@v1
         with:
-          path: public/  
+          azure_static_web_apps_api_token: ${{ secrets.AZURE_TOKEN }}
+          app_location: 'public'
+          action: 'upload'
+          #app_location: '/'
+          #skip_app_build: true
 
-  deploy:
-    if: ${{ always() }}
-    runs-on: ubuntu-latest
-    needs: build
 
-    permissions:
-      pages: write
-      id-token: write
 
-    environment:
-      name: github-pages
-      url: ${{ steps.deploy.outputs.page_url }}
+   #   - name: Upload artifact
+   #     if: ${{ matrix.os == 'ubuntu-latest' && matrix.node == 18 }}
+   #     uses: actions/upload-pages-artifact@v3
+   #     with:
+   #       path: public/  
 
-    steps:
-     - name: Deploy
-       id: deploy
-       uses: actions/deploy-pages@v4
-
-  notify:
-    runs-on: ubuntu-latest
-    needs: deploy
-    if: always()
-
-    steps:
-      - name: notify to slack
-        uses: 8398a7/action-slack@v3
-        env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK }}
-        with:
-          status: ${{ job.status }}
-          fields: repo,commit,author,job,took
+ # deploy:
+ #   if: ${{ always() }}
+ #   runs-on: ubuntu-latest
+ #   needs: build
+#
+ #   permissions:
+ #     pages: write
+ #     id-token: write
+#
+ #   environment:
+ #     name: github-pages
+ #     url: ${{ steps.deploy.outputs.page_url }}
+#
+ #   steps:
+ #    - name: Deploy
+ #      id: deploy
+ #      uses: actions/deploy-pages@v4
+#
+ # notify:
+ #   runs-on: ubuntu-latest
+ #   needs: deploy
+ #   if: always()
+#
+ #   steps:
+ #     - name: notify to slack
+ #       uses: 8398a7/action-slack@v3
+ #       env:
+ #         SLACK_WEBHOOK_URL: ${{ secrets.SLACK }}
+ #       with:
+ #         status: ${{ job.status }}
+ #         fields: repo,commit,author,job,took
 # Uncomment the following sections if you want to use matrix builds or additional steps
 
   
